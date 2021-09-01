@@ -7,7 +7,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"net/http"
 	"testJunior/database"
@@ -38,7 +37,7 @@ func SignUp(c *gin.Context) {
 	count, err := userCollection.CountDocuments(ctx, bson.M{"username": user.Username})
 	defer cancel()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for the email"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for the username"})
 		log.Panic(err)
 		return
 	}
@@ -123,7 +122,6 @@ func Refresh(c *gin.Context) {
 	tokenAuth, err := helper.ExtractTokenMetadata(c.Request)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, err.Error())
-		c.Abort()
 		return
 	}
 
@@ -131,7 +129,6 @@ func Refresh(c *gin.Context) {
 		err = DeleteOldAuth()
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, err.Error())
-			c.Abort()
 			return
 		}
 	}
@@ -141,27 +138,13 @@ func Refresh(c *gin.Context) {
 	filter := bson.D{{"tuuid", tokenAuth.TUuid}}
 
 	var rawAd map[string]interface{}
-	err = userCollection.FindOne(ctx, filter).Decode(&rawAd)
+	err = userCollection.FindOneAndDelete(ctx, filter).Decode(&rawAd)
 	if err != nil {
-		// ErrNoDocuments means that the filter did not match any documents in
-		//the collection.
-		if err == mongo.ErrNoDocuments {
-			return
-		}
-		log.Fatal(err)
-	}
-	count, err := userCollection.DeleteOne(ctx,	filter)
-	if err != nil {
-		log.Panic(err)
+		c.JSON(http.StatusUnauthorized, err.Error())
 		return
 	}
 
 	defer cancel()
-
-	if count.DeletedCount != 1 {
-		c.JSON(http.StatusUnauthorized, "Refresh token expired")
-		return
-	}
 
 	ad, err := helper.CreateToken(rawAd["userid"].(string))
 	if err != nil {
@@ -199,7 +182,6 @@ func DeleteOldAuth() error {
 	defer cancel()
 
 	if err != nil {
-		log.Panic(err)
 		return err
 	}
 
@@ -223,7 +205,6 @@ func CreateAuth(ad *helper.AccessDetails) error {
 	defer cancel()
 
 	if err != nil {
-		log.Panic(err)
 		return err
 	}
 
@@ -238,7 +219,7 @@ func FetchAuth(authD *helper.AccessDetails) error {
 	filter := bson.D{{"tuuid", authD.TUuid}}
 	err := userCollection.FindOne(ctx,filter).Decode(&ad)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer cancel()
