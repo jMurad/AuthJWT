@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "91c9291b-750f-4244-ac84-a01f79566695",
+		"name": "Ver2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SignUp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Murad\",\r\n    \"last_name\": \"Yahyaev\",\r\n    \"email\": \"a@a.ru\",\r\n    \"password\": \"w12345\",\r\n    \"phone\": \"8800\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/users/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"a@a.ru\",\r\n    \"password\": \"w12345\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Api-X",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzA1MTE3NjUsInBrIjoiIiwidHV1aWQiOiI5NTdhZDIzZi02ZmJmLTRkMGYtYWY4Zi0zNGQ4YjU0YjE4YWEiLCJ1c2VyaWQiOiI2MTJkMDJmZWMyZTE3YmJjNDNiMDAzN2YifQ.bTufz5llRhtF4dQtqCVR9oKZS2dPzzTuBo6gqbLjsyf5GFyYB4378gC3MhW4dydxnVW4JpLwDa5JHvxIIFqhI-cJX06XUqln-4QxJkgfcv5A1iBaUDL9lmv_hcHMXIcAWVzMDrEduEAYiwuhlWMF2nbro7qesInFgX8JOaXH40vCmN9i2d270EhsAS_uqn5U2ODfpdX8vuv9jPSTte3jKgl_jlc1NYEJrjntxLeaOjVWZmnQ5AqBfkfd_lqP7TH3tVMXfAgTymICZ6UczmPazIOfNE0fAqNu-LMMZWZKeEaJ-kaCyue_2npUUBHM5Qa_NNCff9YZFkKXImzRLRM4TA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Hello from api-1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA0NDk1OTYsInR1dWlkIjoiN2M2NTA1YzAtY2RkNS00ZjlmLWJmNjQtYzg4MzMzYjk1MTcxIiwidXNlcmlkIjoiNjEyZDAyZmVjMmUxN2JiYzQzYjAwMzdmIn0.GZ5jLSbZ1BAeTnaAkQV8W-8CHZ0I0u9INbdbPfW5T2E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/users/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
